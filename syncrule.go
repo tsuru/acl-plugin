@@ -31,7 +31,10 @@ var forceSyncCmd = &cobra.Command{
 		defer rsp.Body.Close()
 
 		var response forceResponse
-		json.NewDecoder(rsp.Body).Decode(&response)
+		err = json.NewDecoder(rsp.Body).Decode(&response)
+		if err != nil {
+			return err
+		}
 
 		fmt.Printf("Sync request sent, %d rules synced\n", response.Count)
 		return nil

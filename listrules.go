@@ -166,7 +166,7 @@ func renderExtraSyncInfo(rules []types.Rule, rulesSync []types.RuleSyncInfo) {
 			err := json.Unmarshal([]byte(latestSync.SyncResult), &data)
 			if err != nil {
 				data = []map[string]interface{}{}
-				json.Unmarshal([]byte(latestSync.SyncResult), &data)
+				_ = json.Unmarshal([]byte(latestSync.SyncResult), &data)
 			}
 			indented, _ := json.MarshalIndent(data, "", "  ")
 			fmt.Printf("Sync result in engine %q: %v\n", rs.Engine, string(indented))
