@@ -1,0 +1,46 @@
+builds:
+- id: acl
+  main: ./main.go
+  binary: acl
+  ldflags:
+  - -s -w
+  env:
+  - CGO_ENABLED=0
+  goos:
+  - darwin
+  - linux
+  - windows
+  goarch:
+  - amd64
+  - 386
+  - arm64
+  ignore:
+  - goos: darwin
+    goarch: 386
+  - goos: windows
+    goarch: arm64
+
+archives:
+- id: acl
+  builds:
+  - acl
+  name_template: "acl_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+  format_overrides:
+  - goos: windows
+    format: zip
+  replacements:
+    darwin: Darwin
+    linux: Linux
+    windows: Windows
+    386: i386
+    amd64: x86_64
+  files:
+  - LICENSE
+
+checksum:
+  name_template: "checksums.txt"
+
+release:
+  prerelease: auto
+  extra_files:
+    - glob: ./manifest.json
