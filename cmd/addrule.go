@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package cmd
 
 import (
 	"bytes"
@@ -18,7 +18,7 @@ import (
 	"github.com/tsuru/acl-api/api/types"
 )
 
-var addCustomRuleCmd = &cobra.Command{
+var AddCustomRuleCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Add new rule custom rule",
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -58,7 +58,7 @@ var addCustomRuleCmd = &cobra.Command{
 	},
 }
 
-var addRuleCmd = &cobra.Command{
+var AddRuleCmd = &cobra.Command{
 	Use:   "add [service name] [instance name]",
 	Short: "Add new rule",
 	Example: `

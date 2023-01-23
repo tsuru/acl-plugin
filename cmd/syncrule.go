@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package cmd
 
 import (
 	"encoding/json"
@@ -18,7 +18,7 @@ type forceResponse struct {
 	Count int `json:"count"`
 }
 
-var forceSyncCmd = &cobra.Command{
+var ForceSyncCmd = &cobra.Command{
 	Use:   "sync [app name]",
 	Short: "Force sync rules (for debug/troubleshooting purpose)",
 	Args:  cobra.ExactArgs(1),
@@ -41,7 +41,7 @@ var forceSyncCmd = &cobra.Command{
 	},
 }
 
-var syncDNSCmd = &cobra.Command{
+var SyncDNSCmd = &cobra.Command{
 	Use:   "sync-dns [cname]",
 	Short: "Force sync rules (for debug/troubleshooting purpose)",
 	Args:  cobra.ExactArgs(1),

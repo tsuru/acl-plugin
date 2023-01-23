@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package cmd
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var removeRuleCmd = &cobra.Command{
+var RemoveRuleCmd = &cobra.Command{
 	Use:   "remove [service name] [instance name] [id]",
 	Short: "Remove rule",
 	Args:  cobra.MinimumNArgs(2),

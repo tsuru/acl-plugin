@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package cmd
 
 import (
 	"encoding/json"
@@ -25,7 +25,7 @@ type serviceRuleData struct {
 	RulesSync       []types.RuleSyncInfo
 }
 
-var listAllRulesCmd = &cobra.Command{
+var ListAllRulesCmd = &cobra.Command{
 	Use:   "list [service name]",
 	Short: "List all rules",
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -85,7 +85,7 @@ var listAllRulesCmd = &cobra.Command{
 	},
 }
 
-var listRuleCmd = &cobra.Command{
+var ListRuleCmd = &cobra.Command{
 	Use:   "list [service name] [instance name]",
 	Short: "List rules",
 	Args:  cobra.MinimumNArgs(1),
