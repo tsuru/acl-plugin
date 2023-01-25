@@ -26,3 +26,9 @@ graph TD;
       acl-operator -- Manage --> network-policies
     end
 ```
+
+## Install
+
+```
+tsuru plugin install acl https://github.com/tsuru/acl-plugin/releases/latest/download/manifest.json
+```
