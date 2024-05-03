@@ -62,7 +62,7 @@ func doProxyAdminRequest(method, service, path string, body io.Reader) (*http.Re
 
 func doProxyRequest(method, service, instance, path string, body io.Reader) (*http.Response, error) {
 	baseURL := viper.GetString("tsuru.target")
-	fullUrl := fmt.Sprintf("%s/services/%s/proxy/%s?callback=%s",
+	fullUrl := fmt.Sprintf("%s/1.20/services/%s/resources/%s%s",
 		strings.TrimSuffix(baseURL, "/"),
 		service,
 		instance,
