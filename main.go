@@ -79,6 +79,8 @@ func main() {
 
 	cmd.ListRuleCmd.Flags().Bool("show-sync", false, "Show rules latest sync attempt")
 	cmd.ListRuleCmd.Flags().Bool("show-extra-sync", false, "Show rules with latest sync attempt details.")
+	cmd.ListRuleCmd.Flags().Bool("json", false, "Return the raw JSON output instead of the formatted table")
+	cmd.ListAllRulesCmd.Flags().Bool("json", false, "Return the raw JSON output instead of the formatted table")
 	cmd.ListAllRulesCmd.Flags().Bool("show-extra-sync", false, "Show rules with latest sync attempt details.")
 
 	if err := rootCmd.Execute(); err != nil {
