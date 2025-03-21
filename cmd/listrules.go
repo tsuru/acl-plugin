@@ -5,6 +5,7 @@
 package cmd
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -38,6 +39,16 @@ var ListAllRulesCmd = &cobra.Command{
 		data, err := ioutil.ReadAll(rsp.Body)
 		if err != nil {
 			return err
+		}
+		jsonOutput, _ := cmd.Flags().GetBool("json")
+		if jsonOutput {
+			var prettyJSON bytes.Buffer
+			err := json.Indent(&prettyJSON, data, "", "  ")
+			if err != nil {
+				return errors.Wrap(err, "failed to prettify JSON")
+			}
+			fmt.Println(prettyJSON.String())
+			return nil
 		}
 		var rules []types.Rule
 		err = json.Unmarshal(data, &rules)
@@ -99,6 +110,16 @@ var ListRuleCmd = &cobra.Command{
 		data, err := ioutil.ReadAll(rsp.Body)
 		if err != nil {
 			return err
+		}
+		jsonOutput, _ := cmd.Flags().GetBool("json")
+		if jsonOutput {
+			var prettyJSON bytes.Buffer
+			err := json.Indent(&prettyJSON, data, "", "  ")
+			if err != nil {
+				return errors.Wrap(err, "failed to prettify JSON")
+			}
+			fmt.Println(prettyJSON.String())
+			return nil
 		}
 		var ruleData serviceRuleData
 		err = json.Unmarshal(data, &ruleData)
