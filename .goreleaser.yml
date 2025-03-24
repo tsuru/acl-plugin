@@ -27,7 +27,7 @@ archives:
   ids:
   - acl
   name_template: >-
-    rpaasv2_{{ .Version }}_
+    acl_{{ .Version }}_
     {{- if eq .Os "darwin" -}}
       Darwin
     {{- else if eq .Os "linux" -}}
