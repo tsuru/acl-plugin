@@ -1,0 +1,14 @@
+run:
+  tests: true
+
+linters-settings:
+  gofmt:
+    simplify: true
+
+linters:
+  enable:
+  - goimports
+  - gofmt
+  - misspell
+  disable:
+  - errcheck
