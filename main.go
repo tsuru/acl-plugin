@@ -35,6 +35,7 @@ func initConfig(rootCmd *cobra.Command) func() {
 
 func main() {
 	rootCmd := &cobra.Command{
+		Use:     "acl",
 		Version: version.Version,
 	}
 	cobra.OnInitialize(initConfig(rootCmd))

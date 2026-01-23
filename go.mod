@@ -1,12 +1,12 @@
 module github.com/tsuru/acl-plugin
 
-go 1.19
+go 1.25
 
 require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/pkg/errors v0.9.1
-	github.com/spf13/cobra v1.7.0
-	github.com/spf13/pflag v1.0.5
+	github.com/spf13/cobra v1.10.2
+	github.com/spf13/pflag v1.0.9
 	github.com/spf13/viper v1.16.0
 	github.com/tsuru/acl-api v0.1.5-0.20230920203734-6133efd4b663
 	github.com/tsuru/tablecli v0.0.0-20190131152944-7ded8a3383c6
