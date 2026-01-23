@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -87,8 +86,8 @@ func doProxyURLRequest(method, fullUrl string, body io.Reader) (*http.Response, 
 		return nil, err
 	}
 	if rsp.StatusCode < 200 || rsp.StatusCode >= 400 {
-		data, _ := ioutil.ReadAll(rsp.Body)
-		rsp.Body.Close()
+		data, _ := io.ReadAll(rsp.Body)
+		_ = rsp.Body.Close()
 		return nil, errors.Errorf("invalid status code %d: %q", rsp.StatusCode, string(data))
 	}
 	warnOnce.Do(func() {

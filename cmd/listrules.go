@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"sort"
 	"strconv"
@@ -36,7 +36,7 @@ var ListAllRulesCmd = &cobra.Command{
 			return err
 		}
 		defer rsp.Body.Close()
-		data, err := ioutil.ReadAll(rsp.Body)
+		data, err := io.ReadAll(rsp.Body)
 		if err != nil {
 			return err
 		}
@@ -60,7 +60,7 @@ var ListAllRulesCmd = &cobra.Command{
 			return err
 		}
 		defer rsp.Body.Close()
-		data, err = ioutil.ReadAll(rsp.Body)
+		data, err = io.ReadAll(rsp.Body)
 		if err != nil {
 			return err
 		}
@@ -74,7 +74,7 @@ var ListAllRulesCmd = &cobra.Command{
 			return err
 		}
 		defer rsp.Body.Close()
-		data, err = ioutil.ReadAll(rsp.Body)
+		data, err = io.ReadAll(rsp.Body)
 		if err != nil {
 			return err
 		}
@@ -107,7 +107,7 @@ var ListRuleCmd = &cobra.Command{
 			return err
 		}
 		defer rsp.Body.Close()
-		data, err := ioutil.ReadAll(rsp.Body)
+		data, err := io.ReadAll(rsp.Body)
 		if err != nil {
 			return err
 		}

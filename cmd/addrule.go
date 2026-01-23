@@ -52,7 +52,7 @@ var AddCustomRuleCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		defer rsp.Body.Close()
+		defer func() { _ = rsp.Body.Close() }()
 
 		return nil
 	},
@@ -93,7 +93,7 @@ tsuru acl rules add <ACL SERVICE> --ip MYIP/32 --port tcp:443
 		if err != nil {
 			return err
 		}
-		defer rsp.Body.Close()
+		defer func() { _ = rsp.Body.Close() }()
 		fmt.Println("Rule successfully added.")
 		return nil
 	},
