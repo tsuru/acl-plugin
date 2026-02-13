@@ -17,6 +17,8 @@ import (
 )
 
 func initConfig(rootCmd *cobra.Command) func() {
+	cmd.InitTableClI()
+
 	return func() {
 		viper.SetConfigName(".acl")
 		viper.AddConfigPath("$HOME")
