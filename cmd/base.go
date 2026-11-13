@@ -5,15 +5,10 @@ import (
 	"io"
 	"net"
 	"net/http"
-	"os"
 	"strings"
-	"sync"
 	"time"
 
-	"github.com/Masterminds/semver"
-	"github.com/pkg/errors"
 	"github.com/spf13/viper"
-	"github.com/tsuru/acl-api/api/version"
 )
 
 const (
@@ -21,21 +16,17 @@ const (
 	userAgent          = "AclFromHell-Plugin-http-client/1.0"
 )
 
-var (
-	baseClient = &http.Client{
-		Transport: &http.Transport{
-			Dial: (&net.Dialer{
-				Timeout:   30 * time.Second,
-				KeepAlive: 30 * time.Second,
-			}).Dial,
-			TLSHandshakeTimeout: 10 * time.Second,
-			IdleConnTimeout:     20 * time.Second,
-		},
-		Timeout: time.Minute,
-	}
-
-	warnOnce sync.Once
-)
+var baseClient = &http.Client{
+	Transport: &http.Transport{
+		DialContext: (&net.Dialer{
+			Timeout:   30 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		TLSHandshakeTimeout: 10 * time.Second,
+		IdleConnTimeout:     20 * time.Second,
+	},
+	Timeout: time.Minute,
+}
 
 func serviceInstanceName(args []string, minArgs int) (string, string) {
 	var instanceName string
@@ -88,25 +79,7 @@ func doProxyURLRequest(method, fullUrl string, body io.Reader) (*http.Response, 
 	if rsp.StatusCode < 200 || rsp.StatusCode >= 400 {
 		data, _ := io.ReadAll(rsp.Body)
 		_ = rsp.Body.Close()
-		return nil, errors.Errorf("invalid status code %d: %q", rsp.StatusCode, string(data))
+		return nil, fmt.Errorf("invalid status code %d: %q", rsp.StatusCode, string(data))
 	}
-	warnOnce.Do(func() {
-		warnVersion(rsp.Header)
-	})
 	return rsp, nil
-}
-
-func warnVersion(headers http.Header) {
-	versionHeader := headers.Get(version.VersionHeader)
-	serverVersion, _ := semver.NewVersion(versionHeader)
-	clientVersion, _ := semver.NewVersion(version.Version)
-	if serverVersion == nil {
-		serverVersion = &semver.Version{}
-	}
-	if clientVersion == nil {
-		clientVersion = &semver.Version{}
-	}
-	if clientVersion.LessThan(serverVersion) {
-		fmt.Fprintln(os.Stderr, "There is a new version of the acl plugin available. Please update it.")
-	}
 }

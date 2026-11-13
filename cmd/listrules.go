@@ -14,7 +14,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/tsuru/acl-api/api/types"
 	"github.com/tsuru/tablecli"
@@ -45,15 +44,14 @@ var ListAllRulesCmd = &cobra.Command{
 			var prettyJSON bytes.Buffer
 			err := json.Indent(&prettyJSON, data, "", "  ")
 			if err != nil {
-				return errors.Wrap(err, "failed to prettify JSON")
+				return fmt.Errorf("failed to prettify JSON: %w", err)
 			}
 			fmt.Println(prettyJSON.String())
 			return nil
 		}
 		var rules []types.Rule
-		err = json.Unmarshal(data, &rules)
-		if err != nil {
-			return errors.Wrapf(err, "unable to unmarshal %q", string(data))
+		if err := json.Unmarshal(data, &rules); err != nil {
+			return fmt.Errorf("unable to unmarshal %q: %w", string(data), err)
 		}
 		rsp, err = doProxyAdminRequest(http.MethodGet, serviceName, "/rules/sync", nil)
 		if err != nil {
@@ -65,9 +63,8 @@ var ListAllRulesCmd = &cobra.Command{
 			return err
 		}
 		var rulesSync []types.RuleSyncInfo
-		err = json.Unmarshal(data, &rulesSync)
-		if err != nil {
-			return errors.Wrapf(err, "unable to unmarshal %q", string(data))
+		if err := json.Unmarshal(data, &rulesSync); err != nil {
+			return fmt.Errorf("unable to unmarshal %q: %w", string(data), err)
 		}
 		rsp, err = doProxyAdminRequest(http.MethodGet, serviceName, "/services", nil)
 		if err != nil {
@@ -79,9 +76,8 @@ var ListAllRulesCmd = &cobra.Command{
 			return err
 		}
 		var serviceInstances []types.ServiceInstance
-		err = json.Unmarshal(data, &serviceInstances)
-		if err != nil {
-			return errors.Wrapf(err, "unable to unmarshal %q", string(data))
+		if err := json.Unmarshal(data, &serviceInstances); err != nil {
+			return fmt.Errorf("unable to unmarshal %q: %w", string(data), err)
 		}
 		fmt.Println("Service Rules:")
 		renderServiceRules(serviceInstances, true)
@@ -114,17 +110,15 @@ var ListRuleCmd = &cobra.Command{
 		jsonOutput, _ := cmd.Flags().GetBool("json")
 		if jsonOutput {
 			var prettyJSON bytes.Buffer
-			err := json.Indent(&prettyJSON, data, "", "  ")
-			if err != nil {
-				return errors.Wrap(err, "failed to prettify JSON")
+			if err := json.Indent(&prettyJSON, data, "", "  "); err != nil {
+				return fmt.Errorf("failed to prettify JSON: %w", err)
 			}
 			fmt.Println(prettyJSON.String())
 			return nil
 		}
 		var ruleData serviceRuleData
-		err = json.Unmarshal(data, &ruleData)
-		if err != nil {
-			return errors.Wrapf(err, "unable to unmarshal %q", string(data))
+		if err := json.Unmarshal(data, &ruleData); err != nil {
+			return fmt.Errorf("unable to unmarshal %q: %w", string(data), err)
 		}
 		fmt.Println("Rules:")
 		renderServiceRules([]types.ServiceInstance{ruleData.ServiceInstance}, false)
@@ -183,10 +177,10 @@ func renderExtraSyncInfo(rules []types.Rule, rulesSync []types.RuleSyncInfo) {
 			if latestSync.Error != "" {
 				fmt.Printf("Sync error in engine %q: %v\n", rs.Engine, latestSync.Error)
 			}
-			var data interface{} = map[string]interface{}{}
+			var data any = map[string]any{}
 			err := json.Unmarshal([]byte(latestSync.SyncResult), &data)
 			if err != nil {
-				data = []map[string]interface{}{}
+				data = []map[string]any{}
 				_ = json.Unmarshal([]byte(latestSync.SyncResult), &data)
 			}
 			indented, _ := json.MarshalIndent(data, "", "  ")

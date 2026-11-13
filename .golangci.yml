@@ -4,6 +4,7 @@ run:
 linters:
   enable:
     - misspell
+    - modernize
   disable:
     - errcheck
   exclusions:
